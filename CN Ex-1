@@ -1,0 +1,31 @@
+import java.io.*;
+
+public class NetworkCommands {
+    public static void main(String[] args) {
+        String[] commands = {
+            "ping -n 2 www.google.com",          // Windows: use "ping -c 2" for Linux
+            "ipconfig",                          // Use "ifconfig" on Linux
+            "nslookup www.google.com",
+            "tracert www.google.com",            // Use "traceroute" on Linux
+            "netstat -an"
+        };
+
+        for (String command : commands) {
+            try {
+                System.out.println("Running command: " + command);
+                Process process = Runtime.getRuntime().exec(command);
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(process.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+                process.waitFor();
+                System.out.println("\n-----------------------------------------\n");
+            } catch (Exception e) {
+                System.out.println("Error running command: " + command);
+                e.printStackTrace();
+            }
+        }
+    }
+}
